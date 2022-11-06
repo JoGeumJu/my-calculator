@@ -65,7 +65,7 @@ const MenuCal = styled.div`
   margin-left: 3px;
   background-color: #fff;
   border-radius: 24px;
-  box-shadow: 3px 3px 3px 0px #999999;
+  box-shadow: 3px 3px 2px 0px #999999;
   cursor: pointer;
   &:active {
     transform: translate(3px, 3px);
@@ -86,7 +86,7 @@ const MenuSetting = styled.div`
   margin-left: 3px;
   background-color: #fff;
   border-radius: 24px;
-  box-shadow: 3px 3px 3px 0px #999999;
+  box-shadow: 3px 3px 2px 0px #999999;
   cursor: pointer;
   &:active {
     transform: translate(3px, 3px);
@@ -107,7 +107,7 @@ const MenuAbout = styled.div`
   margin-left: 3px;
   background-color: #fff;
   border-radius: 24px;
-  box-shadow: 3px 3px 3px 0px #999999;
+  box-shadow: 3px 3px 2px 0px #999999;
   cursor: pointer;
   &:active {
     transform: translate(3px, 3px);
