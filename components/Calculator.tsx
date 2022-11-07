@@ -29,9 +29,9 @@ export default function Calculator() {
   //     setCalResult((prev) => eval(calResultTemp));
   //   }
   // };
-  const getOper = (e:React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const getOper = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     console.log(e.target);
-  }
+  };
 
   return (
     <Wrapper>
@@ -40,7 +40,7 @@ export default function Calculator() {
           <DivOutput>
             <DivDeco1 />
             <DivDeco2 />
-            <DivTextArea></DivTextArea>
+            <DivTextArea>{calResult}</DivTextArea>
           </DivOutput>
           <DivInput>
             <DivTbody>
@@ -50,7 +50,10 @@ export default function Calculator() {
                     <ABtn
                       value="del"
                       style={{ backgroundColor: "#313131", color: "#fff" }}
-                      onClick={getOper}
+                      onClick={() => {
+                        setCalResult((prev) => prev + "del");
+                        console.log(calResult);
+                      }}
                     >
                       <IconDel />
                     </ABtn>
