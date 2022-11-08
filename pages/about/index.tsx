@@ -1,3 +1,4 @@
+import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FcCalculator, FcSettings } from "react-icons/fc";
 import { GrStatusInfoSmall } from "react-icons/gr";
 import styled from "@emotion/styled";
@@ -14,21 +15,96 @@ export default function About() {
           <IconCal />
           계산기
         </SubTitle>
-        <ContextBox>
-          <IconSquare />
-          <Context>back&nbsp;&nbsp;</Context>
-          <SubContext>설명</SubContext>
-        </ContextBox>
-        <Context>
-          <IconSquare />
-          CE
-        </Context>
-        <Context>
-          <IconSquare />C
-        </Context>
-        <Context>
-          내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-        </Context>
+        <ContextWrapper>
+          <ContextWrap1>
+            <ContextBox>
+              <IconSquare />
+              <Context>
+                <IconDel></IconDel>
+              </Context>
+              <SubContext>끝의 숫자ㆍ문자 지우기</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>CE</Context>
+              <SubContext>현재 계산중인 식 지우기</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>C</Context>
+              <SubContext>
+                이전에 계산했던 모든 식 포함하여 지우기
+              </SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>=</Context>
+              <SubContext>식 계산</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>±</Context>
+              <SubContext>음ㆍ양 부호화</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>1/x</Context>
+              <SubContext>분수화</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>x²</Context>
+              <SubContext>제곱</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>√</Context>
+              <SubContext>루트</SubContext>
+            </ContextBox>
+          </ContextWrap1>
+          <ContextWrap2>
+            <ContextBox>
+              <IconSquare />
+              <Context>%</Context>
+              <SubContext>나눗셈(나머지)</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>/</Context>
+              <SubContext>나눗셈(몫, 나머지)</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>X</Context>
+              <SubContext>곱셈</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>-</Context>
+              <SubContext>뺄셈</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>+</Context>
+              <SubContext>덧셈</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>0</Context>
+              <SubContext>값에 10을 곱셈</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>00</Context>
+              <SubContext>값에 100을 곱셈</SubContext>
+            </ContextBox>
+            <ContextBox>
+              <IconSquare />
+              <Context>.</Context>
+              <SubContext>소숫점</SubContext>
+            </ContextBox>
+          </ContextWrap2>
+        </ContextWrapper>
         <Horizon />
         <SubTitle>
           <IconSetting />
@@ -101,16 +177,34 @@ const ContextBox = styled.div`
   justify-content: flex-start;
   align-items: center;
 `;
+const ContextWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+`;
+const ContextWrap1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+`;
+const ContextWrap2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+`;
 const Context = styled.span`
   display: flex;
   font-size: 16px;
   color: #313131;
+  margin-right: 7px;
 `;
 const SubContext = styled.span`
   display: flex;
   width: 100%;
   font-size: 16px;
   color: #979797;
+  letter-spacing: -0.6px;
 `;
 const Horizon = styled.hr`
   display: flex;
@@ -120,6 +214,11 @@ const Horizon = styled.hr`
   margin: 10px;
   border: none;
 `;
+const IconSquare = styled(GrStatusInfoSmall)`
+  height: 40%;
+  margin: auto 0;
+  margin-right: 3px;
+`;
 const IconCal = styled(FcCalculator)`
   height: 100%;
   margin-right: 3px;
@@ -128,10 +227,8 @@ const IconSetting = styled(FcSettings)`
   height: 100%;
   margin-right: 3px;
 `;
-const IconSquare = styled(GrStatusInfoSmall)`
-  height: 40%;
-  margin-right: 3px;
-  margin: auto 0;
+const IconDel = styled(RiDeleteBack2Fill)`
+  height: 100%;
 `;
 const HightLight1 = styled.p`
   color: rgb(156, 204, 101);

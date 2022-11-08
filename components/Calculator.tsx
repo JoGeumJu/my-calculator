@@ -3,9 +3,14 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FaEquals } from "react-icons/fa";
+import { arrayBuffer } from "stream/consumers";
 
 export default function Calculator() {
+  const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
   const [calResult, setCalResult] = useState("");
+  const [prevResult, setPrevResult] = useState("");
+  const [outResult, setOutResult] = useState("");
+  const [resultValue, setResultValue] = useState("");
 
   // const getNum = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
   //   setCalResult((prev) => prev + e.target);
@@ -40,7 +45,11 @@ export default function Calculator() {
           <DivOutput>
             <DivDeco1 />
             <DivDeco2 />
-            <DivTextArea>{calResult}</DivTextArea>
+            <DivTextArea>
+              <DivCalArea>{outResult}</DivCalArea>
+              {/* 츌력 최대 숫자 16개, 입력 최대 숫자 16개 */}
+              <DivRsltArea>{resultValue}</DivRsltArea>
+            </DivTextArea>
           </DivOutput>
           <DivInput>
             <DivTbody>
@@ -51,8 +60,19 @@ export default function Calculator() {
                       value="del"
                       style={{ backgroundColor: "#313131", color: "#fff" }}
                       onClick={() => {
-                        setCalResult((prev) => prev + "del");
-                        console.log(calResult);
+                        if (
+                          calResult !== "" &&
+                          NUMBERS.includes(calResult[calResult.length - 1])
+                        ) {
+                          setCalResult(calResult.slice(0, -1));
+                          setOutResult(outResult.slice(0, -1));
+                        } else if (
+                          calResult !== "" &&
+                          !NUMBERS.includes(calResult[calResult.length - 1])
+                        ) {
+                          setCalResult(calResult.slice(0, -1));
+                          setOutResult(outResult.slice(0, -3));
+                        }
                       }}
                     >
                       <IconDel />
@@ -60,28 +80,52 @@ export default function Calculator() {
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult("");
+                      setOutResult("");
+                      setResultValue("");
+                    }}
+                  >
                     <ABtn value="ce" style={{ color: "#fff" }}>
                       CE
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setPrevResult("");
+                      setCalResult("");
+                      setOutResult("");
+                      setResultValue("");
+                    }}
+                  >
                     <ABtn value="c" style={{ color: "#fff" }}>
                       C
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        setCalResult((prev) => prev + "%");
+                        setOutResult((prev) => prev + " % ");
+                      }
+                    }}
+                  >
                     <ABtn value="%" style={{ backgroundColor: "yellow" }}>
                       %
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult("");
+                    }}
+                  >
                     <ABtn value="sign" style={{ backgroundColor: "yellow" }}>
                       ±
                     </ABtn>
@@ -90,35 +134,61 @@ export default function Calculator() {
               </TrInput>
               <TrInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "7");
+                      setOutResult((prev) => prev + "7");
+                    }}
+                  >
                     <ABtn value="7" style={{ backgroundColor: "pink" }}>
                       7
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "8");
+                      setOutResult((prev) => prev + "8");
+                    }}
+                  >
                     <ABtn value="8" style={{ backgroundColor: "pink" }}>
                       8
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "9");
+                      setOutResult((prev) => prev + "9");
+                    }}
+                  >
                     <ABtn value="9" style={{ backgroundColor: "pink" }}>
                       9
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        setCalResult((prev) => prev + "/");
+                        setOutResult((prev) => prev + " / ");
+                      }
+                    }}
+                  >
                     <ABtn value="/" style={{ backgroundColor: "yellow" }}>
                       /
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "7");
+                    }}
+                  >
                     <ABtn
                       value="fraction"
                       style={{ backgroundColor: "yellow" }}
@@ -130,35 +200,61 @@ export default function Calculator() {
               </TrInput>
               <TrInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "4");
+                      setOutResult((prev) => prev + "4");
+                    }}
+                  >
                     <ABtn value="4" style={{ backgroundColor: "pink" }}>
                       4
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "5");
+                      setOutResult((prev) => prev + "5");
+                    }}
+                  >
                     <ABtn value="5" style={{ backgroundColor: "pink" }}>
                       5
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "6");
+                      setOutResult((prev) => prev + "6");
+                    }}
+                  >
                     <ABtn value="6" style={{ backgroundColor: "pink" }}>
                       6
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        setCalResult((prev) => prev + "*");
+                        setOutResult((prev) => prev + " X ");
+                      }
+                    }}
+                  >
                     <ABtn value="*" style={{ backgroundColor: "yellow" }}>
                       X
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult("");
+                    }}
+                  >
                     <ABtn value="pow" style={{ backgroundColor: "yellow" }}>
                       x²
                     </ABtn>
@@ -167,35 +263,61 @@ export default function Calculator() {
               </TrInput>
               <TrInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "1");
+                      setOutResult((prev) => prev + "1");
+                    }}
+                  >
                     <ABtn value="1" style={{ backgroundColor: "pink" }}>
                       1
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "2");
+                      setOutResult((prev) => prev + "2");
+                    }}
+                  >
                     <ABtn value="2" style={{ backgroundColor: "pink" }}>
                       2
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "3");
+                      setOutResult((prev) => prev + "3");
+                    }}
+                  >
                     <ABtn value="3" style={{ backgroundColor: "pink" }}>
                       3
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        setCalResult((prev) => prev + "-");
+                        setOutResult((prev) => prev + " - ");
+                      }
+                    }}
+                  >
                     <ABtn value="-" style={{ backgroundColor: "yellow" }}>
                       -
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult("");
+                    }}
+                  >
                     <ABtn value="sqrt" style={{ backgroundColor: "yellow" }}>
                       √
                     </ABtn>
@@ -204,35 +326,64 @@ export default function Calculator() {
               </TrInput>
               <TrInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "0");
+                      setOutResult((prev) => prev + "0");
+                    }}
+                  >
                     <ABtn value="0" style={{ backgroundColor: "pink" }}>
                       0
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + "00");
+                      setOutResult((prev) => prev + "00");
+                    }}
+                  >
                     <ABtn value="00" style={{ backgroundColor: "pink" }}>
                       00
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setCalResult((prev) => prev + ".");
+                      setOutResult((prev) => prev + ".");
+                    }}
+                  >
                     <ABtn value="." style={{ backgroundColor: "pink" }}>
                       .
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        setCalResult((prev) => prev + "+");
+                        setOutResult((prev) => prev + " + ");
+                      }
+                    }}
+                  >
                     <ABtn value="+" style={{ backgroundColor: "yellow" }}>
                       +
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
-                  <DivBtn>
+                  <DivBtn
+                    onClick={() => {
+                      setResultValue(Function(`return ${calResult}`)());
+                      setPrevResult(resultValue);
+                      console.log(prevResult);
+                      
+                    }}
+                  >
                     <ABtn
                       value="="
                       style={{ backgroundColor: "#313131", color: "#fff" }}
@@ -344,7 +495,33 @@ const DivDeco2 = styled.div`
   }
 `;
 const DivTextArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
   padding: 15px;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+`;
+const DivCalArea = styled.div`
+  display: flex;
+  width: 100%;
+  height: 90%;
+  justify-content: right;
+  text-align: right;
+  overflow: hidden;
+  word-break: break-all;
+  overflow-y: auto;
+`;
+const DivRsltArea = styled.div`
+  display: flex;
+  width: 100%;
+  height: 10%;
+  align-items: flex-end;
+  justify-content: right;
+  text-align: right;
+  overflow: hidden;
+  word-break: break-all;
 `;
 // input
 const DivInput = styled.table`
