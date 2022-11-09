@@ -37,7 +37,9 @@ export default function Navbar() {
 
 const Wrapper = styled.div`
   display: flex;
+  position: fixed;
   width: 100%;
+  z-index: 200;
 `;
 const Nav = styled.nav`
   display: flex;

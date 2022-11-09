@@ -1,24 +1,24 @@
 {
   "swiper_theme_data": [
     {
-      "id": 0,
+      "id": "0",
       "src": "/images/swiperTheme/theme0.PNG",
       "color": [
-        { "colorName": "color0", "rgb": "#729599", "fontColor": "#000" },
+        { "colorName": "color0", "rgb": "#729599", "fontColor": "#313131" },
         {
           "colorName": "color1",
           "rgb": "#BCC5CE",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color2",
           "rgb": "#E6DFD9",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color3",
           "rgb": "#BFB3A8",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color4",
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "id": 1,
+      "id": "1",
       "src": "/images/swiperTheme/theme1.PNG",
       "color": [
         { "colorName": "color0", "rgb": "#732634", "fontColor": "#fff" },
@@ -40,25 +40,25 @@
         {
           "colorName": "color2",
           "rgb": "#D9B4BE",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color3",
           "rgb": "#F2CED8",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color4",
           "rgb": "#FAACC4",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         }
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "src": "/images/swiperTheme/theme2.PNG",
       "color": [
-        { "colorName": "color0", "rgb": "#D7D7D9", "fontColor": "#000" },
+        { "colorName": "color0", "rgb": "#D7D7D9", "fontColor": "#313131" },
         {
           "colorName": "color1",
           "rgb": "#4F6F8C",
@@ -71,7 +71,7 @@
         {
           "colorName": "color3",
           "rgb": "#F7D6D2",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color4",
@@ -81,10 +81,10 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "src": "/images/swiperTheme/theme3.PNG",
       "color": [
-        { "colorName": "color0", "rgb": "#729599", "fontColor": "#000" },
+        { "colorName": "color0", "rgb": "#729599", "fontColor": "#313131" },
         {
           "colorName": "color1",
           "rgb": "#7AB3BF",
@@ -93,12 +93,12 @@
         {
           "colorName": "color2",
           "rgb": "#308C58",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color3",
           "rgb": "#F2BE5C",
-          "fontColor": "#000"
+          "fontColor": "#313131"
         },
         {
           "colorName": "color4",

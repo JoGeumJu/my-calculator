@@ -12,15 +12,19 @@ import { MdBrightness5, MdDarkMode } from "react-icons/md";
 import Data from "../../data/Data.json";
 
 export default function Setting() {
+  // fontSize
   const [fontSizeValue, setFontSizeValue] = useState(16);
-  const [isHoverFontSize, setIsHoverFontSize] = useState("notHover");
-  const [fontStyleValue, setFontStyleValue] = useState("KOFIH이종욱체");
   const onChangeFontSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFontSizeValue(Number(e.target.value));
   };
+  const [isHoverFontSize, setIsHoverFontSize] = useState("notHover");
+  // fontStyle
+  const [fontStyleValue, setFontStyleValue] = useState("KOFIH이종욱체");
   const onChangeFontStyle = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFontStyleValue(e.target.value);
   };
+  // theme
+  const [theme, setTheme] = useState(["0", 0]);
 
   SwiperCore.use([Navigation]);
 
@@ -165,10 +169,22 @@ export default function Setting() {
                   key={idx.id}
                 >
                   <ImgTheme src={idx.src} />
-                  <BrightChooseTheme>
+                  <BrightChooseTheme
+                    id={idx.id}
+                    theme={theme}
+                    onClick={() => {
+                      setTheme([idx.id, 0]);
+                    }}
+                  >
                     <IconBrightChoose />
                   </BrightChooseTheme>
-                  <NightChooseTheme>
+                  <NightChooseTheme
+                    id={idx.id}
+                    theme={theme}
+                    onClick={() => {
+                      setTheme([idx.id, 1]);
+                    }}
+                  >
                     <IconNightChoose />
                   </NightChooseTheme>
                 </SwiperSlide>
@@ -184,7 +200,11 @@ export default function Setting() {
             <SwiperThemeOpacity2 />
           </SwiperTheme>
         </DivTheme>
-        <BtnApply>
+        <BtnApply
+          onClick={() => {
+            //적용
+          }}
+        >
           <IconApply />
         </BtnApply>
       </InnerWrap>
@@ -195,12 +215,13 @@ export default function Setting() {
 interface Props {
   value?: number | string;
   is_hover_font_size?: string;
+  theme?: (string | number)[];
 }
 
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100% - 100px);
+  height: 100%;
   justify-content: center;
   align-items: center;
 `;
@@ -407,7 +428,7 @@ const SwiperThemeOpacity2 = styled.div`
     rgba(243, 243, 243, 0)
   );
 `;
-const BrightChooseTheme = styled.div`
+const BrightChooseTheme = styled.div<Props>`
   display: flex;
   position: absolute;
   top: 50%;
@@ -416,19 +437,24 @@ const BrightChooseTheme = styled.div`
   width: 25px;
   height: 25px;
   border-radius: 50%;
+  border: none;
   transform: translate(-50%, -50%);
   background-color: rgba(31, 31, 31, 0.2);
   cursor: pointer;
   &:hover {
     background-color: rgba(31, 31, 31, 0.6);
   }
+  ${(props) =>
+    props.id === props.theme[0] &&
+    props.theme[1] === 0 &&
+    "box-shadow: 0px 0px 6px 3px rgb(255, 82, 82); backgroundColor: rgba(31, 31, 31, 0.6);"}
 `;
 const IconBrightChoose = styled(MdBrightness5)`
   width: 100%;
   height: 100%;
   color: #ffcc5e;
 `;
-const NightChooseTheme = styled.div`
+const NightChooseTheme = styled.div<Props>`
   display: flex;
   position: absolute;
   top: 50%;
@@ -443,6 +469,10 @@ const NightChooseTheme = styled.div`
   &:hover {
     background-color: rgba(255, 255, 255, 0.6);
   }
+  ${(props) =>
+    props.id === props.theme[0] &&
+    props.theme[1] === 1 &&
+    "box-shadow: 0px 0px 6px 3px rgb(255, 82, 82); backgroundColor: rgba(255, 255, 255, 0.6);"}
 `;
 const IconNightChoose = styled(MdDarkMode)`
   width: 100%;
@@ -479,7 +509,7 @@ const IconPrevTheme = styled(FaCaretRight)`
   width: 100%;
   height: 100%;
 `;
-const BtnApply = styled.a`
+const BtnApply = styled.button`
   background: #313131;
   color: #fff;
   padding: 10px 15px;

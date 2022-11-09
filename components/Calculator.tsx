@@ -1,53 +1,73 @@
 import React, { useState } from "react";
 
+import ReactModal from "react-modal";
+ReactModal.setAppElement("body");
+
+import ErrorModal from "./Modal/ErrorModal";
+import MemoModal from "./Modal/MemoModal";
+
 import styled from "@emotion/styled";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FaEquals } from "react-icons/fa";
-import { arrayBuffer } from "stream/consumers";
+import { TbNotes } from "react-icons/tb";
 
 export default function Calculator() {
-  const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
+  const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ")"];
   const [calResult, setCalResult] = useState("");
-  const [prevResult, setPrevResult] = useState("");
   const [outResult, setOutResult] = useState("");
   const [resultValue, setResultValue] = useState("");
+  const [memoResult, setMemoResult] = useState("");
 
-  // const getNum = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-  //   setCalResult((prev) => prev + e.target);
-  // };
-  // const getOper = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-  //   setCalResult((prev) => prev + e.target);
-  // };
-  // const getPoint = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-  //   if (calResult.length !== 0) {
-  //     setCalResult((prev) => prev + e.target);
-  //   }
-  // };
-  // const getResult = () => {
-  //   let calResultTemp = calResult;
-  //   if (isNaN(eval(calResultTemp))) {
-  //     setCalResult("");
-  //   } else if (eval(calResultTemp) == Infinity) {
-  //     alert("0으로 나눌 수 없습니다.");
-  //     return false;
-  //   } else {
-  //     setCalResult((prev) => eval(calResultTemp));
-  //   }
-  // };
-  const getOper = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    console.log(e.target);
+  const chooseNumber = () => {
+    if (outResult.includes(" ")) {
+      let lastIdx = -outResult.length + outResult.lastIndexOf(" ") + 1;
+      let tempArray = outResult;
+      let temp = tempArray.slice(lastIdx);
+      setCalResult(calResult.slice(0, lastIdx));
+      setOutResult(outResult.slice(0, lastIdx));
+      return temp;
+    } else if (!outResult.includes(" ")) {
+      setCalResult("");
+      setOutResult("");
+      return Function(`return ${outResult}`)();
+    }
+  };
+
+  // ErrorModal handling
+  const [isOpenErrorModal, setIsOpenErrorModal] = useState(false);
+  const [contextErrorModal, setContextErrorModal] = useState("");
+  const handleErrorModal = (context: string) => {
+    setIsOpenErrorModal(true);
+    setContextErrorModal(context);
+    setTimeout(function () {
+      setIsOpenErrorModal(false);
+    }, 3000);
+  };
+  // MemoModal handling
+  const [isOpenMemoModal, setIsOpenMemoModal] = useState(false);
+  const [contextMemoModal, setContextMemoModal] = useState("");
+  const handleMemoModal = (context: string) => {
+    setIsOpenMemoModal(true);
+    setContextMemoModal(context);
+    setTimeout(function () {
+      setIsOpenMemoModal(false);
+    }, 3000);
   };
 
   return (
-    <Wrapper>
+    <Wrapper id="modal">
       <InnerWrap>
+        <ErrorModal
+          isOpenModal={isOpenErrorModal}
+          context={contextErrorModal}
+        />
+        <MemoModal isOpenModal={isOpenMemoModal} context={contextMemoModal} />
         <DivCalculator>
           <DivOutput>
             <DivDeco1 />
             <DivDeco2 />
             <DivTextArea>
               <DivCalArea>{outResult}</DivCalArea>
-              {/* 츌력 최대 숫자 16개, 입력 최대 숫자 16개 */}
               <DivRsltArea>{resultValue}</DivRsltArea>
             </DivTextArea>
           </DivOutput>
@@ -55,25 +75,40 @@ export default function Calculator() {
             <DivTbody>
               <TrInput>
                 <TdInput>
-                  <DivBtn>
-                    <ABtn
-                      value="del"
-                      style={{ backgroundColor: "#313131", color: "#fff" }}
-                      onClick={() => {
-                        if (
-                          calResult !== "" &&
-                          NUMBERS.includes(calResult[calResult.length - 1])
-                        ) {
-                          setCalResult(calResult.slice(0, -1));
-                          setOutResult(outResult.slice(0, -1));
-                        } else if (
-                          calResult !== "" &&
-                          !NUMBERS.includes(calResult[calResult.length - 1])
-                        ) {
-                          setCalResult(calResult.slice(0, -1));
-                          setOutResult(outResult.slice(0, -3));
+                  <DivBtn
+                    onClick={() => {
+                      if (
+                        calResult !== "" &&
+                        NUMBERS.includes(calResult[calResult.length - 1]) &&
+                        calResult[calResult.length - 1] !== ")"
+                      ) {
+                        setCalResult(calResult.slice(0, -1));
+                        setOutResult(outResult.slice(0, -1));
+                      } else if (
+                        calResult !== "" &&
+                        NUMBERS.includes(calResult[calResult.length - 1]) &&
+                        calResult[calResult.length - 1] === ")"
+                      ) {
+                        if (calResult[calResult.length - 1] === ")") {
+                          let lastIdxC =
+                            -calResult.length + calResult.lastIndexOf("(");
+                          let lastIdxO =
+                            -outResult.length + outResult.lastIndexOf("(");
+                          setCalResult(calResult.slice(0, lastIdxC));
+                          setOutResult(outResult.slice(0, lastIdxO));
                         }
-                      }}
+                      } else if (
+                        calResult !== "" &&
+                        !NUMBERS.includes(calResult[calResult.length - 1])
+                      ) {
+                        setCalResult(calResult.slice(0, -1));
+                        setOutResult(outResult.slice(0, -3));
+                      }
+                    }}
+                  >
+                    <ABtn
+                      id="del"
+                      style={{ backgroundColor: "#313131", color: "#fff" }}
                     >
                       <IconDel />
                     </ABtn>
@@ -87,22 +122,39 @@ export default function Calculator() {
                       setResultValue("");
                     }}
                   >
-                    <ABtn value="ce" style={{ color: "#fff" }}>
-                      CE
+                    <ABtn
+                      id="c"
+                      style={{ backgroundColor: "#313131", color: "#fff" }}
+                    >
+                      C
                     </ABtn>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
                   <DivBtn
                     onClick={() => {
-                      setPrevResult("");
-                      setCalResult("");
-                      setOutResult("");
-                      setResultValue("");
+                      if (memoResult === "") {
+                        if (resultValue !== "") {
+                          setMemoResult(resultValue);
+                          handleMemoModal(`${resultValue} 저장`);
+                        } else {
+                          handleErrorModal("저장할 결과값이 없습니다");
+                        }
+                      } else if (memoResult !== "") {
+                        if (
+                          !NUMBERS.includes(calResult[calResult.length - 1])
+                        ) {
+                          setCalResult((prev) => prev + memoResult);
+                          setOutResult((prev) => prev + memoResult);
+                          setMemoResult("");
+                        } else {
+                          handleErrorModal("연산자 뒤에서만 부를 수 있습니다");
+                        }
+                      }
                     }}
                   >
-                    <ABtn value="c" style={{ color: "#fff" }}>
-                      C
+                    <ABtn id="memo" style={{ color: "#fff" }}>
+                      <IconMemo />
                     </ABtn>
                   </DivBtn>
                 </TdInput>
@@ -112,10 +164,14 @@ export default function Calculator() {
                       if (NUMBERS.includes(calResult[calResult.length - 1])) {
                         setCalResult((prev) => prev + "%");
                         setOutResult((prev) => prev + " % ");
+                      } else {
+                        if (calResult === "") {
+                          handleErrorModal("숫자를 먼저 입력하세요");
+                        }
                       }
                     }}
                   >
-                    <ABtn value="%" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="%" style={{ backgroundColor: "yellow" }}>
                       %
                     </ABtn>
                   </DivBtn>
@@ -123,10 +179,14 @@ export default function Calculator() {
                 <TdInput>
                   <DivBtn
                     onClick={() => {
-                      setCalResult("");
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        let num: number = chooseNumber();
+                        setCalResult((prev) => prev + `(${-num})`);
+                        setOutResult((prev) => prev + `(${-num})`);
+                      }
                     }}
                   >
-                    <ABtn value="sign" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="sign" style={{ backgroundColor: "yellow" }}>
                       ±
                     </ABtn>
                   </DivBtn>
@@ -140,7 +200,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "7");
                     }}
                   >
-                    <ABtn value="7" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="7" style={{ backgroundColor: "pink" }}>
                       7
                     </ABtn>
                   </DivBtn>
@@ -152,7 +212,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "8");
                     }}
                   >
-                    <ABtn value="8" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="8" style={{ backgroundColor: "pink" }}>
                       8
                     </ABtn>
                   </DivBtn>
@@ -164,7 +224,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "9");
                     }}
                   >
-                    <ABtn value="9" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="9" style={{ backgroundColor: "pink" }}>
                       9
                     </ABtn>
                   </DivBtn>
@@ -175,10 +235,14 @@ export default function Calculator() {
                       if (NUMBERS.includes(calResult[calResult.length - 1])) {
                         setCalResult((prev) => prev + "/");
                         setOutResult((prev) => prev + " / ");
+                      } else {
+                        if (calResult === "") {
+                          handleErrorModal("숫자를 먼저 입력하세요");
+                        }
                       }
                     }}
                   >
-                    <ABtn value="/" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="/" style={{ backgroundColor: "yellow" }}>
                       /
                     </ABtn>
                   </DivBtn>
@@ -186,13 +250,14 @@ export default function Calculator() {
                 <TdInput>
                   <DivBtn
                     onClick={() => {
-                      setCalResult((prev) => prev + "7");
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        let num: number = chooseNumber();
+                        setCalResult((prev) => prev + `(1/${num})`);
+                        setOutResult((prev) => prev + `(1/${num})`);
+                      }
                     }}
                   >
-                    <ABtn
-                      value="fraction"
-                      style={{ backgroundColor: "yellow" }}
-                    >
+                    <ABtn id="fraction" style={{ backgroundColor: "yellow" }}>
                       1/x
                     </ABtn>
                   </DivBtn>
@@ -206,7 +271,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "4");
                     }}
                   >
-                    <ABtn value="4" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="4" style={{ backgroundColor: "pink" }}>
                       4
                     </ABtn>
                   </DivBtn>
@@ -218,7 +283,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "5");
                     }}
                   >
-                    <ABtn value="5" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="5" style={{ backgroundColor: "pink" }}>
                       5
                     </ABtn>
                   </DivBtn>
@@ -230,7 +295,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "6");
                     }}
                   >
-                    <ABtn value="6" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="6" style={{ backgroundColor: "pink" }}>
                       6
                     </ABtn>
                   </DivBtn>
@@ -241,10 +306,14 @@ export default function Calculator() {
                       if (NUMBERS.includes(calResult[calResult.length - 1])) {
                         setCalResult((prev) => prev + "*");
                         setOutResult((prev) => prev + " X ");
+                      } else {
+                        if (calResult === "") {
+                          handleErrorModal("숫자를 먼저 입력하세요");
+                        }
                       }
                     }}
                   >
-                    <ABtn value="*" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="*" style={{ backgroundColor: "yellow" }}>
                       X
                     </ABtn>
                   </DivBtn>
@@ -252,10 +321,14 @@ export default function Calculator() {
                 <TdInput>
                   <DivBtn
                     onClick={() => {
-                      setCalResult("");
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        let num: number = chooseNumber();
+                        setCalResult((prev) => prev + `(${Math.pow(num, 2)})`);
+                        setOutResult((prev) => prev + `(${num}²)`);
+                      }
                     }}
                   >
-                    <ABtn value="pow" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="pow" style={{ backgroundColor: "yellow" }}>
                       x²
                     </ABtn>
                   </DivBtn>
@@ -269,7 +342,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "1");
                     }}
                   >
-                    <ABtn value="1" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="1" style={{ backgroundColor: "pink" }}>
                       1
                     </ABtn>
                   </DivBtn>
@@ -281,7 +354,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "2");
                     }}
                   >
-                    <ABtn value="2" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="2" style={{ backgroundColor: "pink" }}>
                       2
                     </ABtn>
                   </DivBtn>
@@ -293,7 +366,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "3");
                     }}
                   >
-                    <ABtn value="3" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="3" style={{ backgroundColor: "pink" }}>
                       3
                     </ABtn>
                   </DivBtn>
@@ -304,10 +377,14 @@ export default function Calculator() {
                       if (NUMBERS.includes(calResult[calResult.length - 1])) {
                         setCalResult((prev) => prev + "-");
                         setOutResult((prev) => prev + " - ");
+                      } else {
+                        if (calResult === "") {
+                          handleErrorModal("숫자를 먼저 입력하세요");
+                        }
                       }
                     }}
                   >
-                    <ABtn value="-" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="-" style={{ backgroundColor: "yellow" }}>
                       -
                     </ABtn>
                   </DivBtn>
@@ -315,10 +392,14 @@ export default function Calculator() {
                 <TdInput>
                   <DivBtn
                     onClick={() => {
-                      setCalResult("");
+                      if (NUMBERS.includes(calResult[calResult.length - 1])) {
+                        let num: number = chooseNumber();
+                        setCalResult((prev) => prev + `(${Math.sqrt(num)})`);
+                        setOutResult((prev) => prev + `(√${num})`);
+                      }
                     }}
                   >
-                    <ABtn value="sqrt" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="sqrt" style={{ backgroundColor: "yellow" }}>
                       √
                     </ABtn>
                   </DivBtn>
@@ -332,7 +413,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "0");
                     }}
                   >
-                    <ABtn value="0" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="0" style={{ backgroundColor: "pink" }}>
                       0
                     </ABtn>
                   </DivBtn>
@@ -344,7 +425,7 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "00");
                     }}
                   >
-                    <ABtn value="00" style={{ backgroundColor: "pink" }}>
+                    <ABtn id="00" style={{ backgroundColor: "pink" }}>
                       00
                     </ABtn>
                   </DivBtn>
@@ -352,11 +433,16 @@ export default function Calculator() {
                 <TdInput>
                   <DivBtn
                     onClick={() => {
-                      setCalResult((prev) => prev + ".");
-                      setOutResult((prev) => prev + ".");
+                      if (
+                        NUMBERS.includes(calResult[calResult.length - 1]) &&
+                        calResult[calResult.length - 1] !== "."
+                      ) {
+                        setCalResult((prev) => prev + ".");
+                        setOutResult((prev) => prev + ".");
+                      }
                     }}
                   >
-                    <ABtn value="." style={{ backgroundColor: "pink" }}>
+                    <ABtn id="." style={{ backgroundColor: "pink" }}>
                       .
                     </ABtn>
                   </DivBtn>
@@ -367,10 +453,14 @@ export default function Calculator() {
                       if (NUMBERS.includes(calResult[calResult.length - 1])) {
                         setCalResult((prev) => prev + "+");
                         setOutResult((prev) => prev + " + ");
+                      } else {
+                        if (calResult === "") {
+                          handleErrorModal("숫자를 먼저 입력하세요");
+                        }
                       }
                     }}
                   >
-                    <ABtn value="+" style={{ backgroundColor: "yellow" }}>
+                    <ABtn id="+" style={{ backgroundColor: "yellow" }}>
                       +
                     </ABtn>
                   </DivBtn>
@@ -378,14 +468,18 @@ export default function Calculator() {
                 <TdInput>
                   <DivBtn
                     onClick={() => {
-                      setResultValue(Function(`return ${calResult}`)());
-                      setPrevResult(resultValue);
-                      console.log(prevResult);
-                      
+                      if (
+                        calResult !== "" &&
+                        NUMBERS.includes(calResult[calResult.length - 1])
+                      ) {
+                        setResultValue(Function(`return ${calResult}`)());
+                      } else {
+                        handleErrorModal("먼저 식을 완성하세요");
+                      }
                     }}
                   >
                     <ABtn
-                      value="="
+                      id="="
                       style={{ backgroundColor: "#313131", color: "#fff" }}
                     >
                       <IconEql />
@@ -401,18 +495,14 @@ export default function Calculator() {
   );
 }
 
-interface Props {
-  value?: number | string;
-}
-
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100% - 100px);
+  height: 100%;
   justify-content: center;
   align-items: center;
 `;
-const InnerWrap = styled.div`
+const InnerWrap = styled.section`
   display: flex;
   width: 100%;
   height: 100%;
@@ -462,6 +552,7 @@ const DivOutput = styled.div`
 const DivDeco1 = styled.div`
   display: flex;
   position: absolute;
+  z-index: 100;
   height: 50px;
   width: 500px;
   bottom: 220px;
@@ -480,6 +571,7 @@ const DivDeco1 = styled.div`
 const DivDeco2 = styled.div`
   display: flex;
   position: absolute;
+  z-index: 100;
   height: 30px;
   width: 500px;
   bottom: 240px;
@@ -512,16 +604,33 @@ const DivCalArea = styled.div`
   overflow: hidden;
   word-break: break-all;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 11px;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #85bfee;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+  &::-webkit-scrollbar-button {
+    background-color: rgba(0, 0, 0, 0);
+    height: 0px;
+  }
 `;
 const DivRsltArea = styled.div`
   display: flex;
   width: 100%;
   height: 10%;
-  align-items: flex-end;
+  padding: 8px;
+  align-items: center;
   justify-content: right;
   text-align: right;
   overflow: hidden;
   word-break: break-all;
+  border-radius: 12px;
+  background-color: rgba(133, 191, 238, 0.3);
 `;
 // input
 const DivInput = styled.table`
@@ -555,10 +664,15 @@ const TdInput = styled.td`
     padding: 0 5px;
   }
 `;
-const DivBtn = styled.div`
+const DivBtn = styled.button`
   display: flex;
+  padding: 0px;
+  margin: 0px;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  font-family: inherit;
 `;
-const ABtn = styled.a<Props>`
+const ABtn = styled.div`
   display: flex;
   width: 68px;
   height: 68px;
@@ -584,11 +698,17 @@ const IconDel = styled(RiDeleteBack2Fill)`
   width: 100%;
   height: 100%;
   color: #fff;
-  padding: 0px;
+  padding: 3px;
 `;
 const IconEql = styled(FaEquals)`
   width: 100%;
   height: 100%;
   color: #fff;
-  padding: 3px;
+  padding: 5px;
+`;
+const IconMemo = styled(TbNotes)`
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  padding: 2px;
 `;
