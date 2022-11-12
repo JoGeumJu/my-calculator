@@ -34,7 +34,7 @@ export default function MemoModal(props: Props) {
           transform: `${
             props.isOpenModal ? "translate(0px,0px)" : "translate(-310px,0)"
           }`,
-          transition: "0.8s ease",
+          transition: "0.7s ease",
         },
       }}
     >

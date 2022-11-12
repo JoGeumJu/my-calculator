@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
 
+import { useRecoilState } from "recoil";
+import {
+  fontSizeState,
+  fontStyleState,
+  themeModeState,
+  themeColorState,
+} from "../../recoil/themeStates";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper";
 import "swiper/css";
@@ -9,22 +17,45 @@ import { HiMinusCircle, HiPlusCircle } from "react-icons/hi";
 import { FaTag, FaCaretLeft, FaCaretRight, FaCheck } from "react-icons/fa";
 import { MdBrightness5, MdDarkMode } from "react-icons/md";
 
-import Data from "../../data/Data.json";
+import ThemeData from "../../data/ThemeData.json";
+import FontStyleData from "../../data/FontStyleData.json";
 
-export default function Setting() {
+interface Props {
+  value?: number | string;
+  is_hover_font_size?: string;
+  theme?: (string | number)[];
+}
+interface Theme {
+  thememode: (string | number)[];
+}
+
+export default function Setting(props: Props) {
+  // recoil
+  const [fontSizeG, setFontSizeG] = useRecoilState(fontSizeState);
+  const [fontStyleG, setFontStyleG] = useRecoilState(fontStyleState);
+  const [themeModeG, setThemeModeG] = useRecoilState(themeModeState);
+  const [themeColorG, setThemeColorG] = useRecoilState(themeColorState);
+  const updateG = () => {
+    setFontSizeG(fontSizeValue);
+    setFontStyleG(fontStyleValue);
+    setThemeModeG(themeModeValue);
+    setThemeColorG(themeColorValue);
+  };
+
   // fontSize
-  const [fontSizeValue, setFontSizeValue] = useState(16);
+  const [fontSizeValue, setFontSizeValue] = useState(fontSizeG);
   const onChangeFontSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFontSizeValue(Number(e.target.value));
   };
   const [isHoverFontSize, setIsHoverFontSize] = useState("notHover");
   // fontStyle
-  const [fontStyleValue, setFontStyleValue] = useState("KOFIH이종욱체");
+  const [fontStyleValue, setFontStyleValue] = useState(fontStyleG);
   const onChangeFontStyle = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFontStyleValue(e.target.value);
   };
   // theme
-  const [theme, setTheme] = useState(["0", 0]);
+  const [themeModeValue, setThemeModeValue] = useState(themeModeG);
+  const [themeColorValue, setThemeColorValue] = useState(themeColorG);
 
   SwiperCore.use([Navigation]);
 
@@ -45,7 +76,7 @@ export default function Setting() {
                 setFontSizeValue(fontSizeValue - 1);
               }}
             >
-              <IconMinus />
+              <IconMinus thememode={themeModeG} />
             </BtnMinus>
             <InputFontSize
               type={"range"}
@@ -61,7 +92,7 @@ export default function Setting() {
                 setFontSizeValue(fontSizeValue + 1);
               }}
             >
-              <IconPlus />
+              <IconPlus thememode={themeModeG} />
             </BtnPlus>
             <TagFontSize is_hover_font_size={isHoverFontSize}></TagFontSize>
             <TagText is_hover_font_size={isHoverFontSize}>
@@ -80,66 +111,19 @@ export default function Setting() {
             value={fontStyleValue}
             onChange={onChangeFontStyle}
           >
-            <OptionFontStyle
-              value="KOFIH이종욱체"
-              style={{
-                background: "#313131",
-                color: "#ffffff",
-                cursor: "pointer",
-              }}
-            >
-              KOFIH이종욱체
-            </OptionFontStyle>
-            <OptionFontStyle
-              value="여기어때_잘난체"
-              style={{
-                background: "#313131",
-                color: "#ffffff",
-                cursor: "pointer",
-              }}
-            >
-              여기어때 잘난체
-            </OptionFontStyle>
-            <OptionFontStyle
-              value="이사만루"
-              style={{
-                background: "#313131",
-                color: "#ffffff",
-                cursor: "pointer",
-              }}
-            >
-              이사만루
-            </OptionFontStyle>
-            <OptionFontStyle
-              value="카페24_써라운드"
-              style={{
-                background: "#313131",
-                color: "#ffffff",
-                cursor: "pointer",
-              }}
-            >
-              카페24 써라운드
-            </OptionFontStyle>
-            <OptionFontStyle
-              value="Gmarket_Sans"
-              style={{
-                background: "#313131",
-                color: "#ffffff",
-                cursor: "pointer",
-              }}
-            >
-              Gmarket Sans
-            </OptionFontStyle>
-            <OptionFontStyle
-              value="양진체"
-              style={{
-                background: "#313131",
-                color: "#ffffff",
-                cursor: "pointer",
-              }}
-            >
-              양진체
-            </OptionFontStyle>
+            {FontStyleData.map((item) => (
+              <OptionFontStyle
+                key={item.id}
+                value={item.name}
+                style={{
+                  background: "#313131",
+                  color: "#ffffff",
+                  cursor: "pointer",
+                }}
+              >
+                {item.name}
+              </OptionFontStyle>
+            ))}
           </SelFontStyle>
         </DivFontStyle>
         <DivTheme>
@@ -150,6 +134,7 @@ export default function Setting() {
             <Swiper
               className="swiper_container"
               modules={[Navigation]}
+              initialSlide={Number(themeModeValue[0])}
               slidesPerView="auto"
               slidesPerGroup={1}
               spaceBetween={10}
@@ -162,7 +147,7 @@ export default function Setting() {
                 prevEl: ".swiper-button-prev",
               }}
             >
-              {Data.swiper_theme_data.map((idx) => (
+              {ThemeData.map((idx) => (
                 <SwiperSlide
                   className="swiper_slide"
                   style={{ position: "relative", width: "165px" }}
@@ -171,18 +156,32 @@ export default function Setting() {
                   <ImgTheme src={idx.src} />
                   <BrightChooseTheme
                     id={idx.id}
-                    theme={theme}
+                    theme={themeModeValue}
                     onClick={() => {
-                      setTheme([idx.id, 0]);
+                      setThemeModeValue([idx.id, 0]);
+                      setThemeColorValue({
+                        color0: [idx.color[0].rgb, idx.color[0].fontColor],
+                        color1: [idx.color[1].rgb, idx.color[1].fontColor],
+                        color2: [idx.color[2].rgb, idx.color[2].fontColor],
+                        color3: [idx.color[3].rgb, idx.color[3].fontColor],
+                        color4: [idx.color[4].rgb, idx.color[4].fontColor],
+                      });
                     }}
                   >
                     <IconBrightChoose />
                   </BrightChooseTheme>
                   <NightChooseTheme
                     id={idx.id}
-                    theme={theme}
+                    theme={themeModeValue}
                     onClick={() => {
-                      setTheme([idx.id, 1]);
+                      setThemeModeValue([idx.id, 1]);
+                      setThemeColorValue({
+                        color0: [idx.color[0].rgb, idx.color[0].fontColor],
+                        color1: [idx.color[1].rgb, idx.color[1].fontColor],
+                        color2: [idx.color[2].rgb, idx.color[2].fontColor],
+                        color3: [idx.color[3].rgb, idx.color[3].fontColor],
+                        color4: [idx.color[4].rgb, idx.color[4].fontColor],
+                      });
                     }}
                   >
                     <IconNightChoose />
@@ -191,31 +190,19 @@ export default function Setting() {
               ))}
             </Swiper>
             <NextTheme className="swiper-button-prev">
-              <IconNextTheme />
+              <IconNextTheme thememode={themeModeG} />
             </NextTheme>
             <PrevTheme className="swiper-button-next">
-              <IconPrevTheme />
+              <IconPrevTheme thememode={themeModeG} />
             </PrevTheme>
-            <SwiperThemeOpacity1 />
-            <SwiperThemeOpacity2 />
           </SwiperTheme>
         </DivTheme>
-        <BtnApply
-          onClick={() => {
-            //적용
-          }}
-        >
-          <IconApply />
+        <BtnApply onClick={updateG} thememode={themeModeG}>
+          <IconApply thememode={themeModeG} />
         </BtnApply>
       </InnerWrap>
     </Wrapper>
   );
-}
-
-interface Props {
-  value?: number | string;
-  is_hover_font_size?: string;
-  theme?: (string | number)[];
 }
 
 const Wrapper = styled.div`
@@ -224,6 +211,7 @@ const Wrapper = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
+  background-color: none;
 `;
 const InnerWrap = styled.div`
   display: flex;
@@ -281,13 +269,14 @@ const BtnPlus = styled.a`
   align-items: center;
   cursor: pointer;
 `;
-const IconPlus = styled(HiPlusCircle)`
+const IconPlus = styled(HiPlusCircle)<Theme>`
   display: flex;
   margin: 0;
   padding: 0;
   justify-content: center;
   align-items: center;
-  color: #313131;
+  ${(props) =>
+    props.thememode[1] === 0 ? "color: #313131;" : "color: #ffffff;"}
 `;
 const BtnMinus = styled.a`
   display: flex;
@@ -297,13 +286,14 @@ const BtnMinus = styled.a`
   align-items: center;
   cursor: pointer;
 `;
-const IconMinus = styled(HiMinusCircle)`
+const IconMinus = styled(HiMinusCircle)<Theme>`
   display: flex;
   margin: 0;
   padding: 0;
   justify-content: center;
   align-items: center;
-  color: #313131;
+  ${(props) =>
+    props.thememode[1] === 0 ? "color: #313131;" : "color: #ffffff;"}
 `;
 const TagFontSize = styled(FaTag)<Props>`
   display: ${(props) =>
@@ -357,7 +347,6 @@ const SelFontStyle = styled.select`
   box-shadow: 2px 2px 2px 0px #999999;
   font-family: inherit;
   font-size: 14px;
-  color: #313131;
   align-items: center;
   cursor: pointer;
 `;
@@ -378,55 +367,13 @@ const PTheme = styled.p`
 const SwiperTheme = styled.div`
   display: flex;
   position: relative;
-  width: 500px;
+  width: 515px;
   overflow: visible;
 `;
 const ImgTheme = styled.img`
   width: 165px;
   border-radius: 15px;
   cursor: pointer;
-`;
-const SwiperThemeOpacity1 = styled.div`
-  display: flex;
-  position: absolute;
-  z-index: 500;
-  top: 0;
-  left: 0;
-  width: 115px;
-  height: 100%;
-  background-image: linear-gradient(
-    to right,
-    rgba(255, 243, 243, 1),
-    12%,
-    rgba(255, 243, 243, 0.75),
-    32%,
-    rgba(255, 243, 243, 0.5),
-    52.5%,
-    rgba(255, 243, 243, 0.25),
-    75%,
-    rgba(243, 243, 243, 0)
-  );
-`;
-const SwiperThemeOpacity2 = styled.div`
-  display: flex;
-  position: absolute;
-  z-index: 500;
-  top: 0;
-  right: 0;
-  width: 115px;
-  height: 100%;
-  background-image: linear-gradient(
-    to left,
-    rgba(255, 243, 243, 1),
-    12%,
-    rgba(255, 243, 243, 0.75),
-    32%,
-    rgba(255, 243, 243, 0.5),
-    52.5%,
-    rgba(255, 243, 243, 0.25),
-    75%,
-    rgba(243, 243, 243, 0)
-  );
 `;
 const BrightChooseTheme = styled.div<Props>`
   display: flex;
@@ -490,9 +437,11 @@ const NextTheme = styled.div`
   height: 25xp;
   cursor: pointer;
 `;
-const IconNextTheme = styled(FaCaretLeft)`
+const IconNextTheme = styled(FaCaretLeft)<Theme>`
   width: 100%;
   height: 100%;
+  ${(props) =>
+    props.thememode[1] === 0 ? "color: #313131;" : "color: #ffffff;"}
 `;
 const PrevTheme = styled.div`
   display: flex;
@@ -505,27 +454,36 @@ const PrevTheme = styled.div`
   height: 25xp;
   cursor: pointer;
 `;
-const IconPrevTheme = styled(FaCaretRight)`
+const IconPrevTheme = styled(FaCaretRight)<Theme>`
   width: 100%;
   height: 100%;
+  ${(props) =>
+    props.thememode[1] === 0 ? "color: #313131;" : "color: #ffffff;"}
 `;
-const BtnApply = styled.button`
-  background: #313131;
+const BtnApply = styled.button<Theme>`
+  ${(props) =>
+    props.thememode[1] === 0
+      ? "background-color:#313131;"
+      : "background-color:#ffffff;"}
   color: #fff;
   padding: 10px 15px;
   border-radius: 12px;
+  border: none;
   box-shadow: 2px 2px 2px 0px #999999;
   cursor: pointer;
   &:hover {
-    background-color: #414141;
+    ${(props) =>
+      props.thememode[1] === 0
+        ? "background-color:#414141"
+        : "background-color:#eeeeee;"}
   }
   &:active {
     transform: translate(2px, 2px);
     box-shadow: none;
   }
 `;
-const IconApply = styled(FaCheck)`
+const IconApply = styled(FaCheck)<Theme>`
   width: 100%;
   height: 100%;
-  color: #fff;
+  ${(props) => (props.thememode[1] === 0 ? "color:#ffffff;" : "color:#313131;")}
 `;

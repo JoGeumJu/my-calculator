@@ -1,3 +1,6 @@
+import { useRecoilValue } from "recoil";
+import { themeModeState } from "../../recoil/themeStates";
+
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FcCalculator, FcSettings } from "react-icons/fc";
 import { GrStatusInfoSmall } from "react-icons/gr";
@@ -5,11 +8,17 @@ import { TbNotes } from "react-icons/tb";
 import { TiPin } from "react-icons/ti";
 import styled from "@emotion/styled";
 
+interface Theme {
+  thememode: (string | number)[];
+}
+
 export default function About() {
+  const themeModeG = useRecoilValue(themeModeState);
+
   return (
     <Wrapper>
       <IconClip src="/images/about/clip.png" />
-      <InnerWrap>
+      <InnerWrap thememode={themeModeG}>
         <Title>
           <HightLight1>'나의 계산기, my calculator'&nbsp;</HightLight1>사용방법
         </Title>
@@ -119,7 +128,7 @@ export default function About() {
           <Context>1. 글씨크기</Context>
           <ContextExplain>
             <SubContext>
-              글씨크기 설정 (※계산기의 버튼의 글씨크기는 바뀌지 않아요)
+              글씨크기 설정 (※계산기에서 식과 결과가 나오는 왼쪽 부분의 크기만 변해요!)
             </SubContext>
             <ImgEx src="/images/about/exFontSize.png" />
             <ContextTip>
@@ -197,6 +206,28 @@ export default function About() {
             </ContextTip>
           </ContextExplain>
         </ContextBox>
+        <ContextBox>
+          <Context>4. 적용</Context>
+          <ContextExplain>
+            <SubContext>설정값 적용</SubContext>
+            <ContextTip>
+              <IconTip />
+              맨아래의 버튼을 눌르면 설정이 적용되요
+            </ContextTip>
+            <ContextTip>
+              <IconTip />
+              ※버튼을 누르지 않고 다른 페이지로 이동하면 바꾼 설정값들은 적용되지 않아요!
+            </ContextTip>
+            <ContextTip>
+              <ImgEx
+                src="/images/about/exBtnApply.png"
+                style={{
+                  width: "13%",
+                }}
+              />
+            </ContextTip>
+          </ContextExplain>
+        </ContextBox>
       </InnerWrap>
     </Wrapper>
   );
@@ -217,7 +248,7 @@ const IconClip = styled.img`
   right: 10%;
   transform: translate(-35px, -23px);
 `;
-const InnerWrap = styled.div`
+const InnerWrap = styled.div<Theme>`
   display: flex;
   flex-direction: column;
   width: 80%;
@@ -225,7 +256,10 @@ const InnerWrap = styled.div`
   align-items: center;
   justify-content: left;
   align-items: center;
-  background-color: #fff;
+  ${(props) =>
+    props.thememode[1] === 0
+      ? "background-color:#ffffff;"
+      : "background-color:#dbdbdb;"}
   border-radius: 30px;
   padding: 20px;
   overflow-x: hidden;

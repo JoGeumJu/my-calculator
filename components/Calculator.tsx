@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import { useRecoilValue } from "recoil";
+import { fontSizeState, themeColorState } from "../recoil/themeStates";
+
 import ReactModal from "react-modal";
 ReactModal.setAppElement("body");
 
@@ -11,7 +14,21 @@ import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FaEquals } from "react-icons/fa";
 import { TbNotes } from "react-icons/tb";
 
+interface Theme {
+  fontsize?: number;
+  themecolor: {
+    color0: string[];
+    color1: string[];
+    color2: string[];
+    color3: string[];
+    color4: string[];
+  };
+}
+
 export default function Calculator() {
+  const fontSizeG = useRecoilValue(fontSizeState);
+  const themeColorG = useRecoilValue(themeColorState);
+
   const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ")"];
   const [calResult, setCalResult] = useState("");
   const [outResult, setOutResult] = useState("");
@@ -62,11 +79,11 @@ export default function Calculator() {
           context={contextErrorModal}
         />
         <MemoModal isOpenModal={isOpenMemoModal} context={contextMemoModal} />
-        <DivCalculator>
+        <DivCalculator themecolor={themeColorG}>
           <DivOutput>
             <DivDeco1 />
             <DivDeco2 />
-            <DivTextArea>
+            <DivTextArea fontsize={fontSizeG} themecolor={themeColorG}>
               <DivCalArea>{outResult}</DivCalArea>
               <DivRsltArea>{resultValue}</DivRsltArea>
             </DivTextArea>
@@ -106,12 +123,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn
-                      id="del"
-                      style={{ backgroundColor: "#313131", color: "#fff" }}
-                    >
-                      <IconDel />
-                    </ABtn>
+                    <ABtn1 id="del" themecolor={themeColorG}>
+                      <IconDel themecolor={themeColorG} />
+                    </ABtn1>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -122,12 +136,9 @@ export default function Calculator() {
                       setResultValue("");
                     }}
                   >
-                    <ABtn
-                      id="c"
-                      style={{ backgroundColor: "#313131", color: "#fff" }}
-                    >
+                    <ABtn1 id="c" themecolor={themeColorG}>
                       C
-                    </ABtn>
+                    </ABtn1>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -153,9 +164,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="memo" style={{ color: "#fff" }}>
-                      <IconMemo />
-                    </ABtn>
+                    <ABtn2 id="memo" themecolor={themeColorG}>
+                      <IconMemo themecolor={themeColorG} />
+                    </ABtn2>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -171,9 +182,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="%" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="%" themecolor={themeColorG}>
                       %
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -186,9 +197,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="sign" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="sign" themecolor={themeColorG}>
                       ±
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
               </TrInput>
@@ -200,9 +211,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "7");
                     }}
                   >
-                    <ABtn id="7" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="7" themecolor={themeColorG}>
                       7
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -212,9 +223,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "8");
                     }}
                   >
-                    <ABtn id="8" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="8" themecolor={themeColorG}>
                       8
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -224,9 +235,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "9");
                     }}
                   >
-                    <ABtn id="9" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="9" themecolor={themeColorG}>
                       9
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -242,9 +253,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="/" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="/" themecolor={themeColorG}>
                       /
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -257,9 +268,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="fraction" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="fraction" themecolor={themeColorG}>
                       1/x
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
               </TrInput>
@@ -271,9 +282,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "4");
                     }}
                   >
-                    <ABtn id="4" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="4" themecolor={themeColorG}>
                       4
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -283,9 +294,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "5");
                     }}
                   >
-                    <ABtn id="5" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="5" themecolor={themeColorG}>
                       5
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -295,9 +306,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "6");
                     }}
                   >
-                    <ABtn id="6" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="6" themecolor={themeColorG}>
                       6
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -313,9 +324,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="*" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="*" themecolor={themeColorG}>
                       X
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -328,9 +339,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="pow" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="pow" themecolor={themeColorG}>
                       x²
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
               </TrInput>
@@ -342,9 +353,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "1");
                     }}
                   >
-                    <ABtn id="1" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="1" themecolor={themeColorG}>
                       1
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -354,9 +365,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "2");
                     }}
                   >
-                    <ABtn id="2" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="2" themecolor={themeColorG}>
                       2
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -366,9 +377,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "3");
                     }}
                   >
-                    <ABtn id="3" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="3" themecolor={themeColorG}>
                       3
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -384,9 +395,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="-" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="-" themecolor={themeColorG}>
                       -
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -399,9 +410,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="sqrt" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="sqrt" themecolor={themeColorG}>
                       √
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
               </TrInput>
@@ -413,9 +424,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "0");
                     }}
                   >
-                    <ABtn id="0" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="0" themecolor={themeColorG}>
                       0
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -425,9 +436,9 @@ export default function Calculator() {
                       setOutResult((prev) => prev + "00");
                     }}
                   >
-                    <ABtn id="00" style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="00" themecolor={themeColorG}>
                       00
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -442,9 +453,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="." style={{ backgroundColor: "pink" }}>
+                    <ABtn3 id="." themecolor={themeColorG}>
                       .
-                    </ABtn>
+                    </ABtn3>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -460,9 +471,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn id="+" style={{ backgroundColor: "yellow" }}>
+                    <ABtn4 id="+" themecolor={themeColorG}>
                       +
-                    </ABtn>
+                    </ABtn4>
                   </DivBtn>
                 </TdInput>
                 <TdInput>
@@ -478,12 +489,9 @@ export default function Calculator() {
                       }
                     }}
                   >
-                    <ABtn
-                      id="="
-                      style={{ backgroundColor: "#313131", color: "#fff" }}
-                    >
-                      <IconEql />
-                    </ABtn>
+                    <ABtn1 id="=" themecolor={themeColorG}>
+                      <IconEql themecolor={themeColorG} />
+                    </ABtn1>
                   </DivBtn>
                 </TdInput>
               </TrInput>
@@ -509,14 +517,13 @@ const InnerWrap = styled.section`
   justify-content: center;
   align-items: center;
 `;
-const DivCalculator = styled.div`
+const DivCalculator = styled.div<Theme>`
   display: flex;
   flex-direction: row;
-  background-color: tomato;
+  ${(props) => `background:${props.themecolor.color0[0]};`}
   border-radius: 40px;
-  border: 6px solid #e14e35;
   box-shadow: 6px 6px 2px 0px #999999;
-  padding: 20px;
+  padding: 25px;
   justify-content: center;
   align-items: center;
   @media only screen and (max-width: 1024px) {
@@ -586,7 +593,7 @@ const DivDeco2 = styled.div`
     left: -220px;
   }
 `;
-const DivTextArea = styled.div`
+const DivTextArea = styled.div<Theme>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -594,11 +601,13 @@ const DivTextArea = styled.div`
   width: 100%;
   height: 100%;
   justify-content: space-between;
+  ${(props) => `font-size:${props.fontsize}px;`}
 `;
 const DivCalArea = styled.div`
   display: flex;
   width: 100%;
   height: 90%;
+  font-size: inherit;
   justify-content: right;
   text-align: right;
   overflow: hidden;
@@ -622,8 +631,9 @@ const DivCalArea = styled.div`
 const DivRsltArea = styled.div`
   display: flex;
   width: 100%;
-  height: 10%;
+  height: 15%;
   padding: 8px;
+  font-size: inherit;
   align-items: center;
   justify-content: right;
   text-align: right;
@@ -672,14 +682,15 @@ const DivBtn = styled.button`
   border: none;
   font-family: inherit;
 `;
-const ABtn = styled.div`
+const ABtn1 = styled.div<Theme>`
   display: flex;
   width: 68px;
   height: 68px;
   padding: 20px;
   justify-content: center;
   align-items: center;
-  background-color: gray;
+  ${(props) => `background:${props.themecolor.color1[0]};`}
+  ${(props) => `color:${props.themecolor.color1[1]};`}
   border-radius: 27px;
   box-shadow: 3px 3px 2px 0px #999999;
   font-size: 17px;
@@ -694,21 +705,89 @@ const ABtn = styled.div`
     height: 60px;
   }
 `;
-const IconDel = styled(RiDeleteBack2Fill)`
+const ABtn2 = styled.div<Theme>`
+  display: flex;
+  width: 68px;
+  height: 68px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  ${(props) => `background-color:${props.themecolor.color2[0]};`}
+  border-radius: 27px;
+  box-shadow: 3px 3px 2px 0px #999999;
+  font-size: 17px;
+  cursor: pointer;
+  &:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+  @media only screen and (max-width: 1024px) {
+    border-radius: 22px;
+    width: 60px;
+    height: 60px;
+  }
+`;
+const ABtn3 = styled.div<Theme>`
+  display: flex;
+  width: 68px;
+  height: 68px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  ${(props) => `background-color:${props.themecolor.color3[0]};`}
+  ${(props) => `color:${props.themecolor.color3[1]};`}
+  border-radius: 27px;
+  box-shadow: 3px 3px 2px 0px #999999;
+  font-size: 17px;
+  cursor: pointer;
+  &:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+  @media only screen and (max-width: 1024px) {
+    border-radius: 22px;
+    width: 60px;
+    height: 60px;
+  }
+`;
+const ABtn4 = styled.div<Theme>`
+  display: flex;
+  width: 68px;
+  height: 68px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  ${(props) => `background-color:${props.themecolor.color4[0]};`}
+  ${(props) => `color:${props.themecolor.color4[1]};`}
+  border-radius: 27px;
+  box-shadow: 3px 3px 2px 0px #999999;
+  font-size: 17px;
+  cursor: pointer;
+  &:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+  }
+  @media only screen and (max-width: 1024px) {
+    border-radius: 22px;
+    width: 60px;
+    height: 60px;
+  }
+`;
+const IconDel = styled(RiDeleteBack2Fill)<Theme>`
   width: 100%;
   height: 100%;
-  color: #fff;
+  ${(props) => `color:${props.themecolor.color1[1]};`}
   padding: 3px;
 `;
-const IconEql = styled(FaEquals)`
+const IconEql = styled(FaEquals)<Theme>`
   width: 100%;
   height: 100%;
-  color: #fff;
-  padding: 5px;
+  ${(props) => `color:${props.themecolor.color1[1]};`}
+  padding: 6px;
 `;
-const IconMemo = styled(TbNotes)`
+const IconMemo = styled(TbNotes)<Theme>`
   width: 100%;
   height: 100%;
-  color: #fff;
+  ${(props) => `color:${props.themecolor.color2[1]};`}
   padding: 2px;
 `;
