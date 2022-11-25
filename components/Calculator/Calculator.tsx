@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
 import { useRecoilValue } from "recoil";
-import { fontSizeState, themeColorState } from "../recoil/themeStates";
+import { fontSizeState, themeColorState } from "../../recoil/themeStates";
 
 import ReactModal from "react-modal";
 ReactModal.setAppElement("body");
 
-import ErrorModal from "./Modal/ErrorModal";
-import MemoModal from "./Modal/MemoModal";
+import ErrorModal from "../Modal/ErrorModal";
+import MemoModal from "../Modal/MemoModal";
 
 import styled from "@emotion/styled";
 import { RiDeleteBack2Fill } from "react-icons/ri";
@@ -608,6 +608,7 @@ const DivCalArea = styled.div`
   width: 100%;
   height: 90%;
   font-size: inherit;
+  color: #313131;
   justify-content: right;
   text-align: right;
   overflow: hidden;
@@ -634,6 +635,7 @@ const DivRsltArea = styled.div`
   height: 15%;
   padding: 8px;
   font-size: inherit;
+  color: #313131;
   align-items: center;
   justify-content: right;
   text-align: right;

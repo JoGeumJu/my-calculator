@@ -12,10 +12,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper";
 import "swiper/css";
 
+import ReactModal from "react-modal";
+ReactModal.setAppElement("body");
+
 import styled from "@emotion/styled";
 import { HiMinusCircle, HiPlusCircle } from "react-icons/hi";
 import { FaTag, FaCaretLeft, FaCaretRight, FaCheck } from "react-icons/fa";
 import { MdBrightness5, MdDarkMode } from "react-icons/md";
+
+import SettingModal from "../../components/Modal/SettingModal";
 
 import ThemeData from "../../data/ThemeData.json";
 import FontStyleData from "../../data/FontStyleData.json";
@@ -57,10 +62,25 @@ export default function Setting(props: Props) {
   const [themeModeValue, setThemeModeValue] = useState(themeModeG);
   const [themeColorValue, setThemeColorValue] = useState(themeColorG);
 
+  // MemoModal handling
+  const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
+  const [contextSettingModal, setContextMemoModal] =
+    useState("설정값이 성공적으로 바뀌었습니다");
+  const handleSettingModal = () => {
+    setIsOpenSettingModal(true);
+    setTimeout(function () {
+      setIsOpenSettingModal(false);
+    }, 3000);
+  };
+
   SwiperCore.use([Navigation]);
 
   return (
     <Wrapper>
+      <SettingModal
+        isOpenModal={isOpenSettingModal}
+        context={contextSettingModal}
+      />
       <InnerWrap>
         <DivFontSize>
           <DivTextArea>
@@ -94,8 +114,14 @@ export default function Setting(props: Props) {
             >
               <IconPlus thememode={themeModeG} />
             </BtnPlus>
-            <TagFontSize is_hover_font_size={isHoverFontSize}></TagFontSize>
-            <TagText is_hover_font_size={isHoverFontSize}>
+            <TagFontSize
+              is_hover_font_size={isHoverFontSize}
+              thememode={themeModeG}
+            ></TagFontSize>
+            <TagText
+              is_hover_font_size={isHoverFontSize}
+              thememode={themeModeG}
+            >
               {fontSizeValue}
             </TagText>
           </DivInputArea>
@@ -197,7 +223,13 @@ export default function Setting(props: Props) {
             </PrevTheme>
           </SwiperTheme>
         </DivTheme>
-        <BtnApply onClick={updateG} thememode={themeModeG}>
+        <BtnApply
+          onClick={() => {
+            handleSettingModal();
+            updateG();
+          }}
+          thememode={themeModeG}
+        >
           <IconApply thememode={themeModeG} />
         </BtnApply>
       </InnerWrap>
@@ -237,6 +269,7 @@ const DivInputArea = styled.div`
   width: 100%;
   align-items: center;
   justify-content: center;
+  
 `;
 // font-size
 const DivFontSize = styled.div`
@@ -295,7 +328,7 @@ const IconMinus = styled(HiMinusCircle)<Theme>`
   ${(props) =>
     props.thememode[1] === 0 ? "color: #313131;" : "color: #ffffff;"}
 `;
-const TagFontSize = styled(FaTag)<Props>`
+const TagFontSize = styled(FaTag)<Props & Theme>`
   display: ${(props) =>
     props.is_hover_font_size === "hover" ? "flex" : "none"};
   position: absolute;
@@ -304,10 +337,10 @@ const TagFontSize = styled(FaTag)<Props>`
   bottom: -33px;
   right: 7px;
   transform: rotate(45deg);
-  color: #313131;
+  ${(props) => (props.thememode[1] === 0 ? "color:#313131;" : "color:#ffffff;")}
   transition: 0.3s ease;
 `;
-const TagText = styled.p<Props>`
+const TagText = styled.p<Props & Theme>`
   display: ${(props) =>
     props.is_hover_font_size === "hover" ? "flex" : "none"};
   position: absolute;
@@ -317,7 +350,7 @@ const TagText = styled.p<Props>`
   height: 30px;
   bottom: -44px;
   right: -2px;
-  color: #fff;
+  ${(props) => (props.thememode[1] === 0 ? "color:#ffffff;" : "color:#313131;")}
   font-size: 12px;
   transition: 0.3s ease;
 `;
