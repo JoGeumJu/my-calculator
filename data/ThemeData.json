@@ -1,0 +1,164 @@
+[
+  {
+    "id": "0",
+    "src": "/images/swiperTheme/theme0.PNG",
+    "color": [
+      { "colorName": "color0", "rgb": "#729599", "fontColor": "#313131" },
+      {
+        "colorName": "color1",
+        "rgb": "#BCC5CE",
+        "fontColor": "#313131"
+      },
+      {
+        "colorName": "color2",
+        "rgb": "#E6DFD9",
+        "fontColor": "#313131"
+      },
+      {
+        "colorName": "color3",
+        "rgb": "#BFB3A8",
+        "fontColor": "#313131"
+      },
+      {
+        "colorName": "color4",
+        "rgb": "#7A7067",
+        "fontColor": "#ffffff"
+      }
+    ]
+  },
+  {
+    "id": "1",
+    "src": "/images/swiperTheme/theme1.PNG",
+    "color": [
+      { "colorName": "color0", "rgb": "#D9B4BE", "fontColor": "#313131" },
+      {
+        "colorName": "color1",
+        "rgb": "#8C264a",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color2",
+        "rgb": "#732634",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color3",
+        "rgb": "#F2CED8",
+        "fontColor": "#313131"
+      },
+      {
+        "colorName": "color4",
+        "rgb": "#FAACC4",
+        "fontColor": "#313131"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "src": "/images/swiperTheme/theme2.PNG",
+    "color": [
+      { "colorName": "color0", "rgb": "#D7D7D9", "fontColor": "#313131" },
+      {
+        "colorName": "color1",
+        "rgb": "#4F6F8C",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color2",
+        "rgb": "#94A69F",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color3",
+        "rgb": "#F7D6D2",
+        "fontColor": "#313131"
+      },
+      {
+        "colorName": "color4",
+        "rgb": "#3C5473",
+        "fontColor": "#ffffff"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "src": "/images/swiperTheme/theme3.PNG",
+    "color": [
+      { "colorName": "color0", "rgb": "#F2BE5C", "fontColor": "#313131" },
+      {
+        "colorName": "color1",
+        "rgb": "#731702",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color2",
+        "rgb": "#729599",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color3",
+        "rgb": "#308C58",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color4",
+        "rgb": "#7AB3BF",
+        "fontColor": "#ffffff"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "src": "/images/swiperTheme/theme4.PNG",
+    "color": [
+      { "colorName": "color0", "rgb": "#F24B6A", "fontColor": "#ffffff" },
+      {
+        "colorName": "color1",
+        "rgb": "#5A0E5C",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color2",
+        "rgb": "#A84088",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color3",
+        "rgb": "#FFDA66",
+        "fontColor": "#313131"
+      },
+      {
+        "colorName": "color4",
+        "rgb": "#1FCECB",
+        "fontColor": "#313131"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "src": "/images/swiperTheme/theme5.PNG",
+    "color": [
+      { "colorName": "color0", "rgb": "#99B7F9", "fontColor": "#313131" },
+      {
+        "colorName": "color1",
+        "rgb": "#131A40",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color2",
+        "rgb": "#273273",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color3",
+        "rgb": "#4E64A6",
+        "fontColor": "#ffffff"
+      },
+      {
+        "colorName": "color4",
+        "rgb": "#829FD9",
+        "fontColor": "#313131"
+      }
+    ]
+  }
+]
