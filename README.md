@@ -1,4 +1,9 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h3><aside>
+💡 다양한 테마 설정들을 커스텀할 수 있는 웹 계산기 프로젝트
+
+</aside></h3></br>
+Calculator with the ability to save and load results separately!</br>
+On the Settings page, you can customize the font size, font, color, and even light or dark mode of the calculator.
 
 ## Getting Started
 
